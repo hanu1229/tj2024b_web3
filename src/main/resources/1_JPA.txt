@@ -105,3 +105,37 @@
         02-5. @GeneratedValue(strategy = GenerationType.IDENTITY)
                 auto_increment 지원
                 @Id와 같이 사용
+
+[ JPA Repository ]
+    01. 정의 : 기본적인 CRUD작업을 자동으로 제공 | 추가적인 쿼리 가능
+
+    02. 사용법
+        - 인터페이스 생성
+        - 해당 인터페이스 위에 @Repository로 스프링 컨테이너에 빈 등록
+        - 해당 인터페이스에 extends JpaRepository<조작할 클래스명, 조작할 클래스의 PK의 타입>
+
+    03. CRUD 메소드
+        1. .save(저장할엔티티객체);
+            - 존재하지 않는 PK이면 insert, 존재하는 PK이면 update
+            - 반환값 : insert/update 이후 영속(연결/매핑)된 객치(엔티티)
+        2. .findAll();
+            - 모든 엔티티를 select한다
+            - 반환값 : 리스트타입으로 반환
+        3. .findById(조회할 PK값)
+            - pk값과 일치하는 엔티티를 select 한다.
+            - 반환값 : Optional<엔티티>
+        4. .deleteById(삭제할pk값)
+            - pk값과 일치하는 엔티티를 delete 한다.
+            - 반환값 : void
+        5. .count()
+            - 레코드(엔티티) 전체 개수 반환
+            - 반환값 : long
+        6. .existsById(조회할 pk값)
+            - pk값과 일치하는 엔티티가 존재하면 true 아니면 false
+    // Optional클래스 : null과 관련된 메소드를 제공하는 클래스
+    // -> nullPointerException을 방지하고자 객체를 포장하는 클래스
+    // 주요 메소드
+    // 1. .isPresent(); | null 이면 false, 객체가 있으면 true
+    // 2. .get(); | 객체를 반환
+    // 3. .orElse(null일때 값); | 객체를 반환하는데 null이면 지정된 값을 반환
+    // 4. .orElseThrow(예외객체); | 객체를 반환하는데 null이면 예외 처리(발생)
