@@ -1,27 +1,26 @@
-package example._리포지토리._과제;
+package example.day01._과제1;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-public class BooksEntity {
+public class Task1ToDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "int")
     private int id;
     @Column(nullable = false, columnDefinition = "varchar(100)")
     private String title;
-    @Column(nullable = false, columnDefinition = "varchar(20)")
-    private String writer;
-    @Column(nullable = false, length = 50)
-    private String publisher;
-    @Column(nullable = false, columnDefinition = "date")
-    private LocalDate year;
+    @Column(nullable = false, columnDefinition = "boolean")
+    private boolean state;
+    @Column(nullable = false)
+    private LocalDate createat;
+    @Column(nullable = false, insertable = false)
+    private LocalDateTime updateat;
 }

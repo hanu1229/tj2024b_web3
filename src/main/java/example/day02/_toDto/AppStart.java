@@ -1,9 +1,11 @@
-package example._리포지토리._과제;
+package example.day02._toDto;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class AppStart {
     public static void main(String[] args) {
         SpringApplication.run(AppStart.class);

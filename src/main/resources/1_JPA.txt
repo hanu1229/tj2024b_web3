@@ -132,10 +132,47 @@
             - 반환값 : long
         6. .existsById(조회할 pk값)
             - pk값과 일치하는 엔티티가 존재하면 true 아니면 false
-    // Optional클래스 : null과 관련된 메소드를 제공하는 클래스
-    // -> nullPointerException을 방지하고자 객체를 포장하는 클래스
-    // 주요 메소드
-    // 1. .isPresent(); | null 이면 false, 객체가 있으면 true
-    // 2. .get(); | 객체를 반환
-    // 3. .orElse(null일때 값); | 객체를 반환하는데 null이면 지정된 값을 반환
-    // 4. .orElseThrow(예외객체); | 객체를 반환하는데 null이면 예외 처리(발생)
+
+        Optional클래스 : null과 관련된 메소드를 제공하는 클래스
+            -> nullPointerException을 방지하고자 객체를 포장하는 클래스
+            주요 메소드
+                1. .isPresent(); | null 이면 false, 객체가 있으면 true
+                2. .get(); | 객체를 반환
+                3. .orElse(null일때 값); | 객체를 반환하는데 null이면 지정된 값을 반환
+                4. .orElseThrow(예외객체); | 객체를 반환하는데 null이면 예외 처리(발생)
+
+[ JPA Auditing ]
+    01. 정의 : 엔티티의 생성/수정의 변화를 기록하는 걸 자동으로 감사하는 기능
+    02. 목적 : SQL의 insert/update를 계속 주시하여 기록
+    03. 사용처 : BaseTime 상속 클래스(엔티티들의 생성/수정 필드 보유)
+    04. 사용법
+        04-1. AppStart클래스 위에 '@EnableJpaAuditing' 작성
+        04-2. Entity 클래스에 상속할 클래스 생성
+                클래스 위에 '@MappedSuperclass' 작성
+                    └── 일반 엔티티가 아닌 상속(공통엔티티) 목적으로 사용하는 엔티티 클래스
+                클래스 위에 '@EntityListeners(AuditingEntityListener.class)' 작성
+                    └── JpaAuditing 대상으로 활성화하여 계속 주시
+                멤버변수 위에 '@CreatedDate' 작성
+                    └── 자동으로 생성 날짜 기록
+                멤버변수 위에 '@LastModifiedDate' 작성
+                    └── 자동으로 수정 날짜 기록
+
+[ JPA entity 와 DTO/VO 변환]
+일반적인 흐름도
+
+view        <---HTTP [ JS0N  <---변환----> DTO ]--->  Controller  <----- JPA[ DTO <--변환--> entity ]-----> Service --entity--> Repository --> DB
+1. react            @RequestBody                                                 doEntity()
+2. flutter          @ResponseBody                                                doDto()
+3. jsp
+4. 타임리프
+5. 머스테치
+
+[ JPA 영속성 : Persistence ]
+    01. 정의 : 자바객체를 데이터베이스와 연관지어 생명주기를 관리하며 동기화하는 기능
+    02. 영속성 컨텍스트 : 영속된 객체들을 관리하는 메모리 공간
+    03. 영속성 매니저 : 영속된 객체들을 저장/조회/수정/삭제 가능
+        주요 메소드
+            .persist(비영속객체) : 영속성 부여
+            .detach(영속객체)   : 영속성 해제
+            .remove(영속객체)   : 영속성 삭제(레코드도 삭제됨)
+            .merge(준영속성객체) : 영속성 연결
