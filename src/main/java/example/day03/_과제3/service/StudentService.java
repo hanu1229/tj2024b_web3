@@ -63,6 +63,7 @@ public class StudentService {
         studentRepository.save(entity);
         return true;
     }
+
     /** 특정 과정에 수강생 전체 조회 */
     public List<StudentDto> studentFindById(int id) {
         System.out.println("StudentService.studentFindById");
