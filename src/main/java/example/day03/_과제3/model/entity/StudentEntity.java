@@ -30,7 +30,7 @@ public class StudentEntity extends BaseTime {
 
     // Entity To Dto
     public StudentDto toDto() {
-        return StudentDto.builder().id(this.id).name(this.name)
+        return StudentDto.builder().id(this.id).name(this.name).courseEntityId(this.courseEntity.getId())
                 .createDate(getCreateDate()).updateDate(getUpdateDate()).build();
     }
 
