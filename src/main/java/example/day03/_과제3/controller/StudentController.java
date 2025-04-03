@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -44,8 +45,17 @@ public class StudentController {
         boolean result = studentService.studentSave(studentDto);
         return result;
     }
-    
+
     /** 특정 과정에 수강생 전체 조회 */
+    @GetMapping("/student/detail")
+    public List<StudentDto> studentFindCourse(@RequestParam(name = "id") int id) {
+        System.out.println("StudentController.studentFindCourse");
+        System.out.println("id = " + id);
+        List<StudentDto> result = studentService.studentFindById(id);
+        return result;
+    }
+    
+    /** 수강생 전체 조회 */
     @GetMapping("/student")
     public List<StudentDto> studentFindAll() {
         System.out.println("StudentController.studentFindAll");

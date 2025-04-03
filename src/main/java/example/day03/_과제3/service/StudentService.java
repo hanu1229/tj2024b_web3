@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,15 +49,42 @@ public class StudentService {
         System.out.println("StudentService.studentSave");
         System.out.println("studentDto = " + studentDto);
         StudentEntity entity = studentDto.toEntity();
-        CourseEntity courseEntity = courseRepository.findById(studentDto.getCourseEntityId()).orElse(null);
-        if(courseEntity == null) { return false; }
-        entity.setCourseEntity(courseEntity);
+        // CourseEntity courseEntity = courseRepository.findById(studentDto.getCourseEntityId()).orElse(null);
+        // if(courseEntity == null) { return false; }
+        // entity.setCourseEntity(courseEntity);
+        Optional<CourseEntity> courseEntity = courseRepository.findById(studentDto.getCourseEntityId());
+        if(courseEntity.isPresent()) {
+            CourseEntity course = courseEntity.get();
+            entity.setCourseEntity(course);
+        } else {
+            return false;
+        }
         System.out.println("entity = " + entity);
         studentRepository.save(entity);
         return true;
     }
-
     /** 특정 과정에 수강생 전체 조회 */
+    public List<StudentDto> studentFindById(int id) {
+        System.out.println("StudentService.studentFindById");
+        System.out.println("id = " + id);
+        CourseEntity entity = null;
+        Optional<CourseEntity> courseEntity = courseRepository.findById(id);
+        if(courseEntity.isPresent()) {
+            entity = courseEntity.get();
+        } else {
+            return null;
+        }
+        List<StudentEntity> studentEntityList = entity.getStudentEntityList();
+        List<StudentDto> result = new ArrayList<>();
+        for(int index = 0; index < studentEntityList.size(); index++) {
+            StudentEntity student = studentEntityList.get(index);
+            StudentDto studentDto = student.toDto();
+            result.add(studentDto);
+        }
+        return result;
+    }
+
+    /** 수강생 전체 조회 */
     public List<StudentDto> studentFindAll() {
         System.out.println("StudentService.studentFindAll");
         List<StudentEntity> studentEntityList = studentRepository.findAll();
@@ -68,4 +96,6 @@ public class StudentService {
         }
         return studentDtoList;
     }
+
+
 }

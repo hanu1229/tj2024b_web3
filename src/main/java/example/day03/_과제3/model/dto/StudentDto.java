@@ -18,6 +18,7 @@ public class StudentDto {
     private String name;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
+    // 과정 번호를 받는 변수
     private int courseEntityId;
 
     // Dto to Entity
