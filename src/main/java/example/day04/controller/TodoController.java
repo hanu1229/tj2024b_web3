@@ -63,4 +63,16 @@ public class TodoController {
         return todoService.todoFindByPage(page, size);
     }
 
+    /** 제목 검색 조회1 <br/>입력한 값이 ★일치★한 제목 조회 */
+    @GetMapping("/search1")
+    public List<TodoDto> search1(@RequestParam(name = "title") String title) {
+        return todoService.search1(title);
+    }
+
+    /** 제목 검색 조회2 <br/>입력한 값이 ★포함★된 제목 조회 */
+    @GetMapping("/search2")
+    public List<TodoDto> search2(@RequestParam(name = "keyword") String keyword) {
+        return todoService.search2(keyword);
+    }
+
 }

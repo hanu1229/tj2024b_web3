@@ -168,4 +168,28 @@ public class TodoService {
          */
     }
 
+    /** 제목 검색 조회1 <br/>입력한 값이 ★일치★한 제목 조회 */
+    public List<TodoDto> search1(String title) {
+        // 방법1 - JPA Repository에서 내가 만든 추상메소드를 사용
+        /*
+        return todoRepository.findByTitle(title).stream()
+                .map(TodoEntity::toDto).collect(Collectors.toList());
+         */
+        // 방법2
+        return todoRepository.findByTitleNative(title).stream()
+                .map(TodoEntity::toDto).collect(Collectors.toList());
+    }
+
+    /** 제목 검색 조회2 <br/>입력한 값이 ★포함★된 제목 조회 */
+    public List<TodoDto> search2(String keyword) {
+        // 방법1 - JPA Repository에서 내가 만든 추상메소드를 사용
+        /*
+        return todoRepository.findByTitleContaining(keyword).stream()
+                .map(TodoEntity::toDto).collect(Collectors.toList());
+         */
+        // 방법2
+        return todoRepository.findByTitleNativeSearch(keyword).stream()
+                .map(TodoEntity::toDto).collect(Collectors.toList());
+    }
+
 }

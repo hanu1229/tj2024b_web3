@@ -23,7 +23,7 @@ public class ProductController {
 
     /** 비품 등록 */
     @PostMapping("")
-    public ProductDto productSave(@RequestBody() ProductDto productDto) {
+    public boolean productSave(@RequestBody() ProductDto productDto) {
         System.out.println("ProductController.productSave");
         System.out.println("productDto = " + productDto);
         return productService.productSave(productDto);
