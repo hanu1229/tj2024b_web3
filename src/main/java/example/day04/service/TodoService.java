@@ -31,7 +31,7 @@ public class TodoService {
         TodoEntity todoEntity = todoDto.toEntity();
         // Entity를 save
         TodoEntity saveEntity = todoRepository.save(todoEntity);
-        if(saveEntity.getId() > 1) {
+        if(saveEntity.getId() > 0) {
             // saveEntity의 결과값이 존재하면
             return saveEntity.toDto();
         } else {

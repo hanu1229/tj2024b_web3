@@ -3,6 +3,7 @@ package example.day04.controller;
 import example.day04.model.dto.TodoDto;
 import example.day04.service.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/day04/todos")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:51837")
 public class TodoController {
 
     private final TodoService todoService;
