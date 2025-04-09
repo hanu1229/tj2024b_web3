@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/day04/todos")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:51837")
+@CrossOrigin("*")
 public class TodoController {
 
     private final TodoService todoService;
