@@ -1,8 +1,8 @@
-package example.day04.service;
+package todo.service;
 
-import example.day04.model.dto.TodoDto;
-import example.day04.model.entity.TodoEntity;
-import example.day04.model.repository.TodoRepository;
+import todo.model.dto.TodoDto;
+import todo.model.entity.TodoEntity;
+import todo.model.repository.TodoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

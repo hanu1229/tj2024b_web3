@@ -1,6 +1,6 @@
-package example.day04.model.dto;
+package todo.model.dto;
 
-import example.day04.model.entity.TodoEntity;
+import todo.model.entity.TodoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

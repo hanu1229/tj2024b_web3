@@ -1,7 +1,7 @@
-package example.day04.controller;
+package todo.controller;
 
-import example.day04.model.dto.TodoDto;
-import example.day04.service.TodoService;
+import todo.model.dto.TodoDto;
+import todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;

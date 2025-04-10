@@ -1,7 +1,6 @@
-package example.day04.model.repository;
+package todo.model.repository;
 
-import example.day04.model.entity.TodoEntity;
-import lombok.RequiredArgsConstructor;
+import todo.model.entity.TodoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

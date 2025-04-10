@@ -1,6 +1,6 @@
-package example.day04.model.entity;
+package todo.model.entity;
 
-import example.day04.model.dto.TodoDto;
+import todo.model.dto.TodoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
