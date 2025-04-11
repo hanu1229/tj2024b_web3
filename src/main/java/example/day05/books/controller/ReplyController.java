@@ -3,6 +3,7 @@ package example.day05.books.controller;
 import example.day05.books.model.dto.ReplyDto;
 import example.day05.books.service.ReplyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/task05/reply")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ReplyController {
 
     private final ReplyService replyService;

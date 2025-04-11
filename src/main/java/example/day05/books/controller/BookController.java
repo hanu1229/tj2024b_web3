@@ -3,6 +3,7 @@ package example.day05.books.controller;
 import example.day05.books.model.dto.BookDto;
 import example.day05.books.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/task05/book")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class BookController {
 
     private final BookService bookService;
@@ -54,10 +56,10 @@ public class BookController {
 
     /** 책 추천 삭제 */
     @DeleteMapping("")
-    public boolean bookDelete(@RequestParam(name = "id") int id) {
+    public boolean bookDelete(@RequestBody() BookDto bookDto) {
         System.out.println("BookController.bookDelete");
-        System.out.println("id = " + id);
-        return bookService.bookDelete(id);
+        System.out.println("bookDto = " + bookDto);
+        return bookService.bookDelete(bookDto);
     }
 
 }

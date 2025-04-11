@@ -63,22 +63,26 @@ public class BookService {
         Optional<BookEntity> optional = bookRepository.findById(bookDto.getId());
         if(optional.isPresent()) {
             BookEntity bookEntity = optional.get();
-            bookEntity.setTitle(bookDto.getTitle());
-            bookEntity.setWriter(bookDto.getWriter());
-            bookEntity.setIntro(bookDto.getIntro());
-            bookEntity.setPassword(bookDto.getPassword());
-            return true;
+            if(bookEntity.getPassword().equals(bookDto.getPassword())) {
+                bookEntity.setTitle(bookDto.getTitle());
+                bookEntity.setWriter(bookDto.getWriter());
+                bookEntity.setIntro(bookDto.getIntro());
+                bookEntity.setPassword(bookDto.getPassword());
+                return true;
+            } else {
+                return false;
+            }
         }
         return false;
     }
 
     /** 책 추천 삭제 */
-    public boolean bookDelete(int id) {
+    public boolean bookDelete(BookDto bookDto) {
         System.out.println("BookService.bookDelete");
-        System.out.println("id = " + id);
-        BookEntity bookEntity = bookRepository.findById(id).orElse(null);
-        if(bookEntity != null) {
-            bookRepository.deleteById(id);
+        System.out.println("bookDto = " + bookDto);
+        BookEntity bookEntity = bookRepository.findById(bookDto.getId()).orElse(null);
+        if(bookEntity != null && bookEntity.getPassword().equals(bookDto.getPassword())) {
+            bookRepository.deleteById(bookEntity.getId());
             return true;
         }
         return false;
