@@ -39,10 +39,10 @@ public class ReplyController {
 
     /** 리뷰 삭제 */
     @DeleteMapping("")
-    public boolean replyDelete(@RequestParam(name = "id") int id) {
+    public boolean replyDelete(@RequestBody() ReplyDto replyDto) {
         System.out.println("ReplyController.replyDelete");
-        System.out.println("id = " + id);
-        return replyService.replyDelete(id);
+        System.out.println("replyDto = " + replyDto);
+        return replyService.replyDelete(replyDto);
     }
 
 }

@@ -7,6 +7,7 @@ import example.day05.books.model.repository.BookRepository;
 import example.day05.books.model.repository.ReplyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +30,10 @@ public class ReplyService {
         Optional<BookEntity> optional = bookRepository.findById(replyDto.getBookId());
         if(optional.isPresent()) {
             BookEntity bookEntity = optional.get();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(replyDto.getPassword());
+            System.out.println("hashedPassword = " + hashedPassword);
+            replyEntity.setPassword(hashedPassword);
             replyEntity.setBookEntity(bookEntity);
             replyRepository.save(replyEntity);
             return replyEntity.toDto();
@@ -54,14 +59,19 @@ public class ReplyService {
     }
 
     /** 리뷰 삭제 */
-    public boolean replyDelete(int id) {
+    public boolean replyDelete(ReplyDto replyDto) {
         System.out.println("ReplyService.replyDelete");
-        System.out.println("id = " + id);
-        ReplyEntity replyEntity = replyRepository.findById(id).orElse(null);
+        System.out.println("replyDto = " + replyDto);
+        ReplyEntity replyEntity = replyRepository.findById(replyDto.getId()).orElse(null);
         if(replyEntity != null) {
-            replyRepository.deleteById(id);
-            return true;
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            boolean result = passwordEncoder.matches(replyDto.getPassword(), replyEntity.getPassword());
+            if(result) {
+                replyRepository.deleteById(replyDto.getId());
+                return true;
+            }
         }
+        System.out.println("리뷰 삭제 >> 비밀번호 틀림");
         return false;
     }
 

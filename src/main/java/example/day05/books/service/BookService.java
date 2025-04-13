@@ -5,6 +5,7 @@ import example.day05.books.model.entity.BookEntity;
 import example.day05.books.model.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.bcel.BcelTypeMunger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +25,10 @@ public class BookService {
     public BookDto bookSave(BookDto bookDto) {
         System.out.println("BookService.bookSave");
         System.out.println("bookDto = " + bookDto);
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String hashedPassword = passwordEncoder.encode(bookDto.getPassword());
-//        System.out.println("hashedPassword = " + hashedPassword);
-//        bookDto.setPassword(hashedPassword);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(bookDto.getPassword());
+        System.out.println("hashedPassword = " + hashedPassword);
+        bookDto.setPassword(hashedPassword);
         // 암호 검증 방법
         // BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         // boolean result = passwordEncoder.matches(비교할 자료, 암호화된 자료);
@@ -63,13 +64,17 @@ public class BookService {
         Optional<BookEntity> optional = bookRepository.findById(bookDto.getId());
         if(optional.isPresent()) {
             BookEntity bookEntity = optional.get();
-            if(bookEntity.getPassword().equals(bookDto.getPassword())) {
+            // 암호 검증 방법
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            boolean result = passwordEncoder.matches(bookDto.getPassword(), bookEntity.getPassword());
+            // 일치하면 true, 불일치이면 false
+            if(result) {
                 bookEntity.setTitle(bookDto.getTitle());
                 bookEntity.setWriter(bookDto.getWriter());
                 bookEntity.setIntro(bookDto.getIntro());
-                bookEntity.setPassword(bookDto.getPassword());
                 return true;
             } else {
+                System.out.println("추천 수정 >>  비밀번호 틀림");
                 return false;
             }
         }
@@ -81,10 +86,15 @@ public class BookService {
         System.out.println("BookService.bookDelete");
         System.out.println("bookDto = " + bookDto);
         BookEntity bookEntity = bookRepository.findById(bookDto.getId()).orElse(null);
-        if(bookEntity != null && bookEntity.getPassword().equals(bookDto.getPassword())) {
-            bookRepository.deleteById(bookEntity.getId());
-            return true;
+        if(bookEntity != null) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            boolean result = passwordEncoder.matches(bookDto.getPassword(), bookEntity.getPassword());
+            if(result) {
+                bookRepository.deleteById(bookEntity.getId());
+                return true;
+            }
         }
+        System.out.println("추천 삭제 >> 비밀번호 틀림");
         return false;
     }
 
