@@ -7,6 +7,7 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +25,9 @@ public class JwtUtil {
     // (2) 라이브러리를 이용한 임의 키 : import java.security.Key;
     // Keys.secretKeyFor(SignatureAlgorithm.암고리즘명);
     private Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
+    
+    // Redis를 조작하기 위한 객체
+    @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
 

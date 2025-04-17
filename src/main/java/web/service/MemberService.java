@@ -72,9 +72,10 @@ public class MemberService {
     }
 
     /// ● 로그아웃
-    public void logout(String email) {
+    public void logout(String token) {
         System.out.println(">> MemberService.logout");
-        System.out.println(">> email = " + email);
+        System.out.println(">> token = " + token);
+        String email = jwtUtil.validateToken(token);
         jwtUtil.deleteToken(email);
     }
     
