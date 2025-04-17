@@ -70,5 +70,11 @@ public class MemberController {
         memberService.logout(token);
     }
 
+    /// ● 최근 24시간 로그인한 접속자 수를 구하는 함수
+    @GetMapping("/login/count")
+    public int loginCount() {
+        return memberService.loginCount();
+    }
+
     
 }

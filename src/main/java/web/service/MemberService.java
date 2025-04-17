@@ -2,12 +2,16 @@ package web.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import web.model.dto.MemberDto;
 import web.model.entity.MemberEntity;
 import web.model.repository.MemberRepository;
 import web.util.JwtUtil;
+
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final JwtUtil jwtUtil;
+    private final StringRedisTemplate stringRedisTemplate;
 
     /** 회원가입 */
     public boolean signup(MemberDto memberDto) {
@@ -36,7 +41,7 @@ public class MemberService {
         return false;
     }
 
-    /** 로그인 */
+    /// ● 로그인
     public String login(MemberDto memberDto) {
         System.out.println(">> MemberService.login");
         System.out.println(">> memberDto = " + memberDto);
@@ -51,6 +56,8 @@ public class MemberService {
         // 비밀번호 검증 성공 | 세션 할당, 토큰 할당
         String token = jwtUtil.createToken(memberEntity.getEmail());
         System.out.println(">> 발급된 token = " + token);
+        // 레디스에 24시간만 저장되는 로그인 로그(기록)하기
+        stringRedisTemplate.opsForValue().set("RECENT_LOGIN:"+memberDto.getEmail(), "true", 1, TimeUnit.DAYS);
         return token;
     }
 
@@ -77,6 +84,14 @@ public class MemberService {
         System.out.println(">> token = " + token);
         String email = jwtUtil.validateToken(token);
         jwtUtil.deleteToken(email);
+    }
+
+    /// ● 최근 24시간 로그인한 접속자 수를 구하는 함수
+    public int loginCount() {
+        // Redis에 저장된 key들 중에서 "RECENT_LOGIN:"으로 시작하는 모든 key를 반환
+        Set<String> keys = stringRedisTemplate.keys("RECENT_LOGIN:*");
+        // 반환된 개수 확인 | 비어 있으면 0 아니면 size()함수를 이용한 key 개수 반환
+        return keys.size();
     }
     
 
