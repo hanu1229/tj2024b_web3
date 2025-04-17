@@ -1,0 +1,53 @@
+[ Redis ]
+    01. 정의 : 인메모리 데이터 저장소
+                --> PC본체(CPU[연산처리], RAM[휘발성메모리/주기억장치], ROM/HDD/SSD[비휘발성메모리/보조기억장치])
+                RAM     : 실행 중인 상태에서만 메모리 저장 | 게임 실행
+                HDD/SSD : 비실행중 상태에서 메모리 저장 | 게임 설치
+                --> 보조기억장치보다 주기억장치가 빠르다.
+    02. 목적 : 관계형 데이터베이스(MYSQL)가 보조기억장치이므로 빠른 메모리를 사용해야 할 때는 주기억창치가 필요
+                --> 관계형데이터베이스(MYSQL) : SQL(질의어)
+                --> 비관계형데이터베이스(몽고DB/Redis) : nosql(객체 형식 - set/get)
+
+    03. 구조 : key-value | map, json과 비슷
+    04. 차이점 : Redis VS RDB
+            - Redis : 휘밯성메모리 | 빠름 | 종료 시 초기화 | 단순 연결구조
+            - RDB : 비휘발성메오리 | 느림 | 종료 시 유지   | 복잡한 연결구조(JDBC)
+            - 활용처
+                - 영구 저장 데이터 : RDB | 회원정보
+                - 실시간 데이터 : Redis | 캐싱, 로그인 상태정보(세션/토큰), 랭킹/순위, 채팅, 알림, 위치기반(좌표) 등등
+
+    05. 캐싱 : Select를 할때마다 데이터베이스에 접근/요청하면 빅데이터(100만개의 레코드 이상) 과부하/성능 저하
+                --> DB에서 한번 조회한 결과를 redis 저장(캐싱)하여 다음에 조회할 때 DB를 조회하지 않고 redis를 조회 | 성능 향상
+
+    06. 설치
+        06-1. 윈도우 : https://github.com/microsoftarchive/redis/releases
+        06-2. zip 파일 설치
+        06-3. 압축 풀기 --> redis-server.exe 실행
+
+    ※ [Spring JDBC : DB연동, Spring JPA : ORM, Spring Mybatis : DB연동, Spring Boot : 웹 관련 자동 초기설정]
+    07. Spring Data Redis
+        07-1. https://start.spring.io/
+        07-2. 그레이들에 외부 redis와 연동될 라이브러리 설치
+                implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        07-3. application.properties파일에서 ip와 port 기본 설정
+
+    08. 주 사용법
+        08-1. 레디스템플릿 객체를 생성
+                @Autowired
+                private StringRedisTemplate stringRedisTemplate;
+        08-2. 레디스에 데이터 저장하는 방법
+                stringRedisTemplate.opsForXXX().set
+                - stringRedisTemplate.opsForValue().set(key, value);
+                    --> value 뒤에 TTL을 넣을 수 있음
+                    --> TTL : Time To Live : 해당하는 데이터를 언제까지 유지할지 유효기간을 정의
+                                즉, TTL이 지나면 해당 자료는 자동으로 삭제
+                - stringRedisTemplate.opsForValue().set(key, value, 주기값, TimeUnit.패턴);
+                    --> TimeUnit.DAYS | TimeUnit.HOURS | TimeUnit.SECOND 등등
+                    --> 주기값이 1이고 timeUnit.DAYS이면 하루 뒤 삭제
+                    --> 주기값이 4이고 timeUnit.HOURS이면 4시간 뒤 삭제
+
+        08-3. 레디스에 데이터를 호출하는 방법
+            - stringRedisTemplate.opsForValue().get(key) : 특정한 key의 value값 반환
+            - stringRedisTemplate.keys("*") : 모든 key값을 반환
+        08-4. 레디스에서 데이터 삭제하는 방법
+            - stringRedisTemplate.delete(key) : 특정한 key-value를 삭제

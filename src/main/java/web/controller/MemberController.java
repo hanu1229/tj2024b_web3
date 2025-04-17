@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import web.model.dto.MemberDto;
 import web.service.MemberService;
@@ -61,5 +62,14 @@ public class MemberController {
         System.out.println(">> token = " + token);
         return memberService.info(token);
     }
+
+    /// ● 로그아웃
+    @GetMapping("/logout")
+    public void logout(@RequestParam(name = "email") String email) {
+        System.out.println(">> MemberController.logout");
+        System.out.println(">> email = " + email);
+        memberService.logout(email);
+    }
+
     
 }

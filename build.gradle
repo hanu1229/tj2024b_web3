@@ -44,6 +44,8 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.12.6'
     // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    // Redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

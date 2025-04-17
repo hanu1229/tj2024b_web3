@@ -69,7 +69,14 @@ public class MemberService {
         if(memberEntity == null) { return null; }
         // 조회된 엔티티가 있으면 dto로 변환하여 반환
         return memberEntity.toDto();
-    }    
+    }
+
+    /// ● 로그아웃
+    public void logout(String email) {
+        System.out.println(">> MemberService.logout");
+        System.out.println(">> email = " + email);
+        jwtUtil.deleteToken(email);
+    }
     
 
 }
